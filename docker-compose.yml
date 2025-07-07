@@ -1,0 +1,42 @@
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - API_GATEWAY_PORT=8000
+      - API_GATEWAY_AGENT_SEED=${API_GATEWAY_AGENT_SEED}
+      - QUERY_PLANNER_AGENT_ADDRESS=${QUERY_PLANNER_AGENT_ADDRESS}
+    networks:
+      - stocksage_net
+
+  query-planner-agent:
+    build:
+      context: ./agents/query_planner_agent
+    environment:
+      - PYTHONUNBUFFERED=1
+      - QUERY_PLANNER_AGENT_SEED=${QUERY_PLANNER_AGENT_SEED}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    networks:
+      - stocksage_net
+    depends_on:
+      - api-gateway
+
+  fundamentals-agent:
+    build:
+      context: ./agents/fundamentals_agent
+    environment:
+      - PYTHONUNBUFFERED=1
+      - FUNDAMENTALS_AGENT_SEED=${FUNDAMENTALS_AGENT_SEED}
+      - API_GATEWAY_AGENT_ADDRESS=${API_GATEWAY_AGENT_ADDRESS}
+    networks:
+      - stocksage_net
+    depends_on:
+      - api-gateway
+      - query-planner-agent
+
+networks:
+  stocksage_net:
+    driver: bridge 
