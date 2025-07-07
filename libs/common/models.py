@@ -1,5 +1,5 @@
 from uagents import Model
-from pydantic import Field
+from pydantic.v1 import Field
 from typing import List, Dict, Any, Optional
 from uuid import UUID, uuid4
 
