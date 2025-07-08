@@ -39,7 +39,7 @@ SESSION_STORE: dict[str, SessionContext] = {}
 
 # --- Public API Endpoint ---
 
-@gateway_agent.on_query(model=ApiQueryRequest, replies=QueryResponse)
+@gateway_agent.on_rest_post("/submit_query", request=ApiQueryRequest, response=QueryResponse)
 async def handle_api_query(ctx: Context, sender: str, msg: ApiQueryRequest):
     """
     This is the public entry point for a user's query.
@@ -115,7 +115,7 @@ async def on_final_context_received(ctx: Context, _sender: str, msg: SessionCont
 
 # --- Status Check Endpoint ---
 
-@gateway_agent.on_query(model=QueryResponse, replies=ReportResponse)
+@gateway_agent.on_rest_post("/get_result", request=QueryResponse, response=ReportResponse)
 async def get_result(ctx: Context, sender: str, msg: QueryResponse):
     """Polls for the result of a query using the session_id."""
     session_id = msg.session_id

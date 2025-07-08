@@ -33,12 +33,12 @@ async def startup(ctx: Context):
     """Log the agent's address on startup."""
     ctx.logger.info(f"Query Planner Agent started with address: {agent.address}")
 
-@agent.on_query(model=PlannerQueryRequest, replies=SessionContext)
-async def handle_query(ctx: Context, sender: str, msg: PlannerQueryRequest):
+# --- Agent Handlers ---
+
+@agent.on_message(model=PlannerQueryRequest, replies=SessionContext)
+async def handle_planner_query(ctx: Context, sender: str, msg: PlannerQueryRequest):
     """
-    Handles incoming queries, uses the PlanningService to create a plan,
-    and returns the updated SessionContext. This is a query handler,
-    so it must return a value.
+    Handles a query from the Gateway Agent to plan the research tasks.
     """
     ctx.logger.info(f"Received query for session {msg.session_id} from {sender}: '{msg.query}'")
     
