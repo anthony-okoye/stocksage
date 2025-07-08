@@ -42,6 +42,21 @@ services:
       - api-gateway
       - query-planner-agent
 
+  technical-agent:
+    build:
+      context: .
+      dockerfile: ./agents/technical_agent/Dockerfile
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TECHNICAL_AGENT_SEED=${TECHNICAL_AGENT_SEED}
+      - API_GATEWAY_AGENT_ADDRESS=${API_GATEWAY_AGENT_ADDRESS}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    networks:
+      - stocksage_net
+    depends_on:
+      - api-gateway
+      - query-planner-agent
+
 networks:
   stocksage_net:
     driver: bridge 

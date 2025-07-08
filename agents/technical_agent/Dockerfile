@@ -20,4 +20,4 @@ COPY ./libs /app/libs
 RUN touch /app/agents/__init__.py
 
 # The command to run the agent as a module from the WORKDIR
-CMD ["python", "-m", "agents.query_planner_agent.agent"] 
+CMD ["python", "-m", "agents.technical_agent.agent"] 
